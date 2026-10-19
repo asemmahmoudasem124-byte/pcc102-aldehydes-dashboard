@@ -798,21 +798,37 @@
         }
 
         // --- LOCAL STORAGE PERSISTENCE ---
-        function loadState() {
-            const saved = localStorage.getItem('pcc102_group3_aldehydes_v2');
-            if (saved) {
-                try {
-                    appState = JSON.parse(saved);
-                } catch (e) {
-                    console.error("Failed to parse state", e);
-                    loadDefaults();
-                }
+        // --- FIREBASE CLOUD INITIALIZATION ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyCDLY86XziyhT2yXbH1HwCLAV2--covaQ0",
+      authDomain: "aldehydes-dashboard.firebaseapp.com",
+      databaseURL: "https://aldehydes-dashboard-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "aldehydes-dashboard",
+      storageBucket: "aldehydes-dashboard.appspot.com",
+      messagingSenderId: "461759466692",
+      appId: "1:461759466692:web:2b0717bb7e38432b654d91"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('dashboard_data');
+
+    // --- REALTIME SYNC (Replaces localStorage) ---
+    function loadState() {
+        dbRef.on('value', (snapshot) => {
+            const cloudData = snapshot.val();
+            if (cloudData) {
+                appState.theme = cloudData.theme || 'light';
+                appState.references = cloudData.references || [...DEFAULT_REFERENCES];
+                appState.tasks = cloudData.tasks || [...DEFAULT_TASKS];
+                appState.notes = cloudData.notes || "";
+                appState.targetTimerMinutes = cloudData.targetTimerMinutes || 10;
+                appState.activityLog = cloudData.activityLog || [];
             } else {
+                // Seed database with defaults if empty
                 loadDefaults();
             }
-            
-            appState.references = appState.references || []; appState.tasks = appState.tasks || []; appState.activityLog = appState.activityLog || []; appState.activeTaskFilter = appState.activeTaskFilter || "All";
-            // Sync status flag with completed
+
+            // Normalize task status flags
             appState.tasks.forEach(t => {
                 if (!t.status) t.status = t.completed ? "Completed" : "Pending";
                 t.completed = (t.status === "Completed");
@@ -820,28 +836,39 @@
 
             timerSecondsLeft = (appState.targetTimerMinutes || 10) * 60;
             updateTimerDisplay();
-        }
+            applyTheme();
+            renderAll();
+        }, (error) => {
+            console.error("Firebase sync error:", error);
+            loadDefaults();
+        });
+    }
 
-        function loadDefaults() {
-            appState.theme = 'light';
-            appState.references = [...DEFAULT_REFERENCES];
-            appState.tasks = [...DEFAULT_TASKS];
-            appState.notes = "Carbonyl Carbon Hybridization: sp2, trigonal planar ~120°.\nTollens Silver Mirror Test: Ag+ -> Ag0 (Aldehyde Oxidation).\nFehling's Reaction: Cu2+ (Blue) -> Cu2O (Red Precipitate).\nIUPAC Naming suffix: '-al' (e.g. Ethanal, Benzaldehyde).";
-            appState.targetTimerMinutes = 10;
-            appState.activityLog = [
-                { time: new Date().toLocaleTimeString(), text: "Group 3 Research Dashboard loaded." }
-            ];
-            saveState();
-        }
+    function loadDefaults() {
+        appState.theme = 'light';
+        appState.references = [...DEFAULT_REFERENCES];
+        appState.tasks = [...DEFAULT_TASKS];
+        appState.notes = "Carbonyl Carbon Hybridization: sp2, trigonal planar ~120°.\nTollens Silver Mirror Test: Ag+ -> Ag0 (Aldehyde Oxidation).\nFehling's Reaction: Cu2+ (Blue) -> Cu2O (Red Precipitate).\nIUPAC Naming suffix: '-al' (e.g. Ethanal, Benzaldehyde).";
+        appState.targetTimerMinutes = 10;
+        appState.activityLog = [
+            { time: new Date().toLocaleTimeString(), text: "Group 3 Research Dashboard loaded from cloud." }
+        ];
+        saveState();
+    }
 
-        let saveT = null;
-        function flushState() {
-            clearTimeout(saveT); saveT = null;
-            try { localStorage.setItem('pcc102_group3_aldehydes_v2', JSON.stringify(appState)); } catch (e) { console.error('Save failed', e); }
-        }
-        function saveState() { clearTimeout(saveT); saveT = setTimeout(flushState, 300); }
-        addEventListener('pagehide', flushState);
-        document.addEventListener('visibilitychange', () => { if (document.hidden) flushState(); });
+    let saveT = null;
+    function saveState() {
+        clearTimeout(saveT);
+        saveT = setTimeout(() => {
+            dbRef.set(appState).catch((error) => {
+                console.error('Cloud save failed', error);
+            });
+        }, 300);
+    }
+
+    function flushState() {
+        // Handled automatically by Firebase realtime listeners
+    }
 
         function logActivity(text, silent) {
             if (!silent) toast(text, /^(Deleted|Reset|Connection: Offline)/.test(text) ? 'warn' : 'ok');
