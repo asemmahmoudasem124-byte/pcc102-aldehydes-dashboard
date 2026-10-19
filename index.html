@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCC 102 - Group 3: Aldehydes Research Project</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            950: '#1e1b4b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Font Awesome SVG fallback: renders icons even if the CSS/webfont is blocked -->
+    <script>
+        /* Lazy fallback: the SVG bundle is only fetched if the Font Awesome webfont fails to load */
+        addEventListener('load', () => {
+            const ok = document.fonts && document.fonts.load ? document.fonts.load('900 1em "Font Awesome 6 Free"').then(f => { if (!f.length) throw 0; }) : Promise.reject();
+            ok.catch(() => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js'; document.head.appendChild(s); });
+        });
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+        :root{--glass:rgba(255,255,255,.9);--glass-strong:rgba(255,255,255,.94);--glass-border:rgba(100,116,139,.25);--shadow:0 1px 2px rgba(15,23,42,.05),0 10px 30px -14px rgba(30,27,75,.28);--bg-a:rgba(99,102,241,.12);--bg-b:rgba(20,184,166,.09)}
+        html.dark{--glass:rgba(15,23,42,.86);--glass-strong:rgba(15,23,42,.92);--glass-border:rgba(148,163,184,.22);--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -16px rgba(0,0,0,.7);--bg-a:rgba(99,102,241,.18);--bg-b:rgba(20,184,166,.10)}
+        body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(55rem 28rem at 8% -8%,var(--bg-a),transparent 60%),radial-gradient(48rem 28rem at 100% 0,var(--bg-b),transparent 60%);transform:translateZ(0)}
+        .glass{background:var(--glass);border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+        .glass-strong{background:var(--glass-strong);border:1px solid var(--glass-border);box-shadow:0 25px 60px -20px rgba(0,0,0,.55)}
+        .glass-inner{background:var(--glass-strong);border:1px solid var(--glass-border)}
+        .card-hover{transition:transform .2s ease}
+        .card-hover:hover{transform:translate3d(0,-2px,0);border-color:#818cf8}
+        button,select{transition:background-color .15s ease,color .15s ease,transform .12s ease}
+        button:not(:disabled):active{transform:scale(.97)}
+        :focus-visible{outline:2px solid #818cf8;outline-offset:2px}
+        /* dark-mode contrast: lift muted greys (:where keeps explicit dark: utilities in charge) */
+        html.dark :where(.text-slate-400){color:#a9b6ca} html.dark :where(.text-slate-500){color:#b6c2d4} html.dark :where(.text-slate-600){color:#c5cfde}
+        html.dark ::placeholder{color:#8896ac} html.dark select option{background:#0f172a;color:#e2e8f0}
+        .modal{visibility:hidden;opacity:0;transition:opacity .2s ease,visibility 0s linear .2s}
+        .modal.show{visibility:visible;opacity:1;transition:opacity .2s ease,visibility 0s}
+        .modal>div{opacity:0;transform:translate3d(0,14px,0) scale(.96);transition:transform .24s cubic-bezier(.2,.9,.3,1),opacity .2s ease;will-change:transform,opacity}
+        .modal.show>div{opacity:1;transform:none}
+        .scroll-box{will-change:transform;contain:layout style}
+        .task-sec{content-visibility:auto;contain-intrinsic-size:auto 520px}
+        .stat-pill{display:inline-flex;align-items:center;gap:.4rem;padding:.375rem .7rem;border-radius:.75rem;font-size:.75rem;color:#e2e8f0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+        .stat-pill b{color:#fff;font-variant-numeric:tabular-nums}
+        .btn-soft{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:600;padding:.4rem .7rem;border-radius:.65rem;color:#334155;background:rgba(255,255,255,.7);border:1px solid rgba(100,116,139,.3)}
+        .btn-soft:hover{background:#fff;border-color:#818cf8;color:#4338ca}
+        html.dark .btn-soft{color:#e2e8f0;background:rgba(30,41,59,.7);border-color:rgba(148,163,184,.3)}
+        html.dark .btn-soft:hover{background:rgba(51,65,85,.9);border-color:#818cf8;color:#fff}
+        .toast{pointer-events:auto;display:flex;align-items:center;gap:.6rem;max-width:min(24rem,calc(100vw - 2rem));padding:.7rem .95rem;border-radius:.85rem;font-size:.8rem;font-weight:500;color:#f8fafc;background:rgba(15,23,42,.95);border:1px solid rgba(148,163,184,.3);border-left:4px solid #34d399;box-shadow:0 14px 34px -12px rgba(0,0,0,.6);opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s}
+        .toast.in{opacity:1;transform:none}.toast i{color:#34d399}.toast-warn{border-left-color:#fbbf24}.toast-warn i{color:#fbbf24}
+        @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors">
+
+    <!-- TOP NAVIGATION & STATUS BAR -->
+    <header class="bg-indigo-950/95 dark:bg-slate-900/95 text-white shadow-xl sticky top-0 z-40 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-indigo-600/30 border border-indigo-400/30 rounded-xl">
+                    <i class="fa-solid fa-flask-vial text-2xl text-indigo-300"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">Group 3</span>
+                        <h1 class="text-base md:text-lg font-bold tracking-tight text-white">PCC 102: Aldehydes Research Project</h1>
+                    </div>
+                    <p class="text-xs text-indigo-200/80">Cairo National University - Faculty of Pharmacy</p>
+                </div>
+            </div>
+
+            <!-- Header Right Controls & Indicators -->
+            <div class="flex items-center flex-wrap gap-2.5 sm:gap-3">
+                <!-- Quick Stats -->
+                <div class="flex items-center gap-2" aria-label="Quick stats">
+                    <span class="stat-pill"><i class="fa-solid fa-book-bookmark text-indigo-300"></i><b id="statRefs">0</b> references</span>
+                    <span class="stat-pill"><i class="fa-solid fa-circle-check text-emerald-400"></i><b id="statDone">0/0</b> tasks done</span>
+                </div>
+                <!-- Theme Switcher Button -->
+                <button onclick="toggleTheme()" class="flex items-center gap-2 bg-slate-900/80 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-700 transition shadow-sm">
+                    <i id="themeIcon" class="fa-solid fa-moon text-amber-300"></i>
+                    <span id="themeText">Dark</span>
+                </button>
+
+                <!-- Connection Status Badge -->
+                <div id="connectionStatus" class="flex items-center gap-2 bg-slate-900/60 dark:bg-slate-950/80 border border-slate-700/80 px-3 py-1.5 rounded-xl text-xs font-medium">
+                    <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="statusText" class="text-slate-200">Checking...</span>
+                </div>
+
+                <!-- Activity Log Toggle Button -->
+                <button onclick="toggleActivityModal()" class="flex items-center gap-2 bg-indigo-800/80 dark:bg-indigo-900/80 hover:bg-indigo-700 dark:hover:bg-indigo-800 text-indigo-100 px-3 py-1.5 rounded-xl text-xs font-medium border border-indigo-600/60 transition shadow-sm">
+                    <i class="fa-solid fa-clock-rotate-left text-indigo-300"></i>
+                    <span class="hidden sm:inline">Activity Log</span>
+                    <span id="logCountBadge" class="bg-indigo-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+        <!-- 1. SUBTEAM PROGRESS OVERVIEW CARDS -->
+        <section class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-indigo-600 dark:text-indigo-400"></i> Subteam Completion Rates
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Dynamic completion percentage updated upon task status edits</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="exportData()" class="btn-soft" title="Download a JSON backup"><i class="fa-solid fa-file-export"></i> Export data</button>
+                    <button onclick="document.getElementById('importFile').click()" class="btn-soft" title="Load a JSON backup or shared task list"><i class="fa-solid fa-file-import"></i> Import data</button>
+                    <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="handleImportFile(event)">
+                    <button onclick="resetAllData()" class="text-xs text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 font-medium px-1"><i class="fa-solid fa-arrows-rotate"></i> Reset Defaults</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- Overall Progress Card -->
+                <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white p-4 rounded-2xl shadow-md flex flex-col justify-between border border-indigo-800/60">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-200">Total Progress</span>
+                            <i class="fa-solid fa-bullseye text-indigo-400"></i>
+                        </div>
+                        <div class="text-3xl font-extrabold" id="overall-percentage">0%</div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="w-full bg-slate-900/80 rounded-full h-2.5 overflow-hidden border border-indigo-700/40">
+                            <div id="overall-bar" class="bg-gradient-to-r from-emerald-400 to-teal-300 h-2.5 w-full origin-left transition-transform duration-500" style="transform:scaleX(0)"></div>
+                        </div>
+                        <p class="text-[11px] text-indigo-200 mt-1.5 flex justify-between">
+                            <span id="overall-task-count">0/0 Completed</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Subteam Cards Dynamic Container -->
+                <div id="subteamProgressContainer" class="col-span-1 sm:col-span-2 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Dynamic Subteam Cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. MAIN WORKSPACE GRID: REHEARSAL TIMER & TRUSTED REFERENCE HUB -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- LEFT COLUMN: Rehearsal Timer & Quick Notes -->
+            <div class="space-y-6">
+                <!-- PRESENTATION REHEARSAL TIMER CARD -->
+                <div class="glass rounded-2xl p-5 space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <div>
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-stopwatch text-indigo-600 dark:text-indigo-400"></i> Rehearsal Timer
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Practical presentation practice</p>
+                        </div>
+                        <button onclick="openEditTimerModal()" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 border border-slate-200 dark:border-slate-700">
+                            <i class="fa-solid fa-pen-to-square text-indigo-600 dark:text-indigo-400"></i> Edit Time
+                        </button>
+                    </div>
+
+                    <!-- Timer Display -->
+                    <div class="text-center py-5 bg-slate-900 dark:bg-slate-950 rounded-xl text-white shadow-inner border border-slate-800">
+                        <div id="timerDisplay" class="text-5xl font-mono font-bold tracking-wider text-emerald-400">10:00</div>
+                        <div class="text-xs text-slate-400 mt-1">
+                            Target Duration: <span id="targetDurationDisplay" class="font-semibold text-slate-200">10 mins</span>
+                        </div>
+                    </div>
+
+                    <!-- Timer Controls -->
+                    <div class="flex items-center justify-center gap-3">
+                        <button id="startTimerBtn" onclick="toggleTimer()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                            <i id="timerPlayIcon" class="fa-solid fa-play"></i> <span id="timerPlayText">Start</span>
+                        </button>
+                        <button onclick="resetTimerManual()" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-2 px-4 rounded-xl text-sm transition border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COLLABORATIVE NOTES SCRATCHPAD -->
+                <div class="glass rounded-2xl p-5 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-note-sticky text-amber-500"></i> Organic Chemical Scratchpad
+                        </h3>
+                        <span id="notesSaveStatus" class="text-[11px] text-slate-400">Auto-saved</span>
+                    </div>
+                    <textarea id="collaborativeNotes" oninput="saveNotes()" class="w-full h-44 p-3 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none custom-scrollbar font-mono text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-950/60" placeholder="Type key reactions (e.g. Aldol condensation, Fehling's test), naming rules, or link shortcuts here..."></textarea>
+                </div>
+            </div>
+
+            <!-- RIGHT 2 COLUMNS: EDITABLE TRUSTED REFERENCE HUB -->
+            <div class="lg:col-span-2 flex">
+                <div class="glass rounded-2xl p-5 space-y-4 flex-1 flex flex-col">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <div>
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-book-bookmark text-indigo-600 dark:text-indigo-400"></i> Trusted Reference Hub
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Curated textbooks & databases used for Group 3 research</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="citeStyle" class="btn-soft" aria-label="Citation style"><option value="apa">APA 7</option><option value="vancouver">Vancouver</option></select>
+                            <button onclick="copyCitations()" class="btn-soft" title="Copy all references as a bibliography"><i class="fa-solid fa-quote-right"></i> Copy citations</button>
+                            <button onclick="openAddReferenceModal('book')" class="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs transition border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-plus"></i> Add Book
+                            </button>
+                            <button onclick="openAddReferenceModal('database')" class="bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900 text-teal-700 dark:text-teal-300 font-semibold px-3 py-1.5 rounded-xl text-xs transition border border-teal-200 dark:border-teal-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-plus"></i> Add Database
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="search" id="refSearch" oninput="setRefQuery(this.value)" placeholder="Search references by title, focus, member or notes" aria-label="Search references" class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-950/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                    <!-- SIDE BY SIDE CONTAINERS FOR BOOKS AND DATABASES -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch flex-1">
+                        
+                        <!-- CONTAINER 1: TEXTBOOKS -->
+                        <div class="bg-slate-100/60 dark:bg-slate-950/50 p-4 rounded-xl border border-slate-200/70 dark:border-slate-700/50 flex flex-col gap-3 h-full">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-indigo-950 dark:text-indigo-300 uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-book text-indigo-600 dark:text-indigo-400"></i> Textbooks
+                                </h4>
+                                <span id="booksCount" class="bg-indigo-100 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                            </div>
+                            <div id="textbooksList" class="space-y-3 scroll-box custom-scrollbar flex-1 min-h-[220px] max-h-[420px] overflow-y-auto py-1 pr-1">
+                                <!-- Books rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- CONTAINER 2: DATABASES -->
+                        <div class="bg-slate-100/60 dark:bg-slate-950/50 p-4 rounded-xl border border-slate-200/70 dark:border-slate-700/50 flex flex-col gap-3 h-full">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-teal-950 dark:text-teal-300 uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-database text-teal-600 dark:text-teal-400"></i> Online Databases
+                                </h4>
+                                <span id="databasesCount" class="bg-teal-100 dark:bg-teal-900/80 text-teal-800 dark:text-teal-200 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                            </div>
+                            <div id="databasesList" class="space-y-3 scroll-box custom-scrollbar flex-1 min-h-[220px] max-h-[420px] overflow-y-auto py-1 pr-1">
+                                <!-- Databases rendered here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. TASK BOARD SECTION -->
+        <section class="glass rounded-2xl p-5 space-y-4 task-sec">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div>
+                    <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-indigo-600 dark:text-indigo-400"></i> Subteam Task Board
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Edit status or assignees to dynamically update subteam progress</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="search" id="taskSearch" oninput="setTaskQuery(this.value)" placeholder="Search tasks" aria-label="Search tasks" class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-950/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:w-48">
+                    </div>
+                    <!-- Filter Buttons -->
+                    <div id="taskFilterButtons" class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs">
+                        <!-- Rendered by JS -->
+                    </div>
+                    <button onclick="openAddTaskModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Add Task
+                    </button>
+                </div>
+            </div>
+
+            <!-- Task List Table -->
+            <div class="overflow-x-auto scroll-box">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 text-xs uppercase font-semibold">
+                            <th class="py-3 px-3 w-10">Done</th>
+                            <th class="py-3 px-3">Task Description</th>
+                            <th class="py-3 px-3">Subteam</th>
+                            <th class="py-3 px-3">Assignee Badge</th>
+                            <th class="py-3 px-3">Status</th>
+                            <th class="py-3 px-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                        <!-- Dynamic Tasks -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-medium text-slate-300">PCC 102 Aldehydes Research Hub &bull; Group 3 &bull; Faculty of Pharmacy, Cairo National University</p>
+            <p class="text-slate-500">Collaborative research management system with live local storage backup</p>
+        </div>
+    </footer>
+
+    <!-- MODAL DIALOGS -->
+
+    <!-- MODAL 1: ADD/EDIT REFERENCE -->
+    <div id="refModal" class="modal pointer-events-none fixed inset-0 bg-slate-950/70 flex items-center justify-center z-50 p-4">
+        <div class="glass-strong rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 text-slate-800 dark:text-slate-100">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <h3 id="refModalTitle" class="font-bold text-base">Add Reference Source</h3>
+                <button onclick="closeRefModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">&times;</button>
+            </div>
+            <form id="refForm" onsubmit="handleRefSubmit(event)" class="space-y-3">
+                <input type="hidden" id="refId">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Resource Type</label>
+                    <select id="refType" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                        <option value="book">Academic Textbook</option>
+                        <option value="database">Online Database</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Title / Resource Name</label>
+                    <input type="text" id="refTitle" required placeholder="e.g. Foye's Medicinal Chemistry" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Focus / Role Description</label>
+                    <input type="text" id="refRole" required placeholder="e.g. Reaction mechanisms, IUPAC rules" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Assignee Badge (e.g. Member B & G)</label>
+                    <input type="text" id="refBadge" placeholder="e.g. Research Member A, Member B & G" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Web Link (Optional)</label>
+                    <input type="url" id="refUrl" placeholder="https://pubchem.ncbi.nlm.nih.gov/" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Key Notes / Chapters</label>
+                    <textarea id="refNotes" rows="2" placeholder="e.g. Chapter 14 - Nucleophilic Addition" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <p class="col-span-2 text-xs font-semibold">Citation details <span class="font-normal text-slate-500 dark:text-slate-400">(optional, used for the bibliography)</span></p>
+                    <input type="text" id="refAuthor" placeholder="Authors: Smith MB; Lemke TL" aria-label="Authors" class="col-span-2 w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="refYear" placeholder="Year" aria-label="Year" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="refEdition" placeholder="Edition (e.g. 7th)" aria-label="Edition" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="refPublisher" placeholder="Publisher / organization" aria-label="Publisher" class="col-span-2 w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <label class="col-span-2 flex items-center gap-2 text-xs"><input type="checkbox" id="refEditor" class="rounded border-slate-300 dark:border-slate-700"> The listed people are editors</label>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeRefModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Save Reference</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: EDIT TIMER DURATION -->
+    <div id="timerModal" class="modal pointer-events-none fixed inset-0 bg-slate-950/70 flex items-center justify-center z-50 p-4">
+        <div class="glass-strong rounded-2xl max-w-xs w-full p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 text-slate-800 dark:text-slate-100">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="font-bold text-base">Set Presentation Target</h3>
+                <button onclick="closeTimerModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">&times;</button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Duration (Minutes)</label>
+                    <input type="number" id="inputTimerMinutes" min="1" max="120" value="10" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Update freely as practical time constraints are clarified.</p>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeTimerModal()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cancel</button>
+                    <button type="button" onclick="saveTimerSettings()" class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Update Timer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: ADD/EDIT TASK -->
+    <div id="taskModal" class="modal pointer-events-none fixed inset-0 bg-slate-950/70 flex items-center justify-center z-50 p-4">
+        <div class="glass-strong rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 text-slate-800 dark:text-slate-100">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <h3 id="taskModalTitle" class="font-bold text-base">Add Subteam Task</h3>
+                <button onclick="closeTaskModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">&times;</button>
+            </div>
+            <form id="taskForm" onsubmit="handleTaskSubmit(event)" class="space-y-3">
+                <input type="hidden" id="taskId">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Task Description</label>
+                    <input type="text" id="taskTitle" required placeholder="e.g. Synthesize Cannizzaro reaction mechanism slide" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Subteam</label>
+                    <select id="taskSubteam" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                        <option value="Team Leader & IT">Team Leader & IT</option>
+                        <option value="Research & Content">Research & Content</option>
+                        <option value="Presentation & Q&A">Presentation & Q&A</option>
+                        <option value="Review & Audit">Review & Audit</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Assignee / Badge</label>
+                    <input type="text" id="taskAssignee" required placeholder="e.g. Ahmed M. / Member B" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Status</label>
+                    <select id="taskStatus" class="w-full border dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: RECENT ACTIVITY LOG -->
+    <div id="activityModal" class="modal pointer-events-none fixed inset-0 bg-slate-950/70 flex items-center justify-center z-50 p-4">
+        <div class="glass-strong rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 flex flex-col max-h-[80vh]">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-indigo-600 dark:text-indigo-400"></i> Dashboard Activity Log
+                </h3>
+                <button onclick="toggleActivityModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">&times;</button>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Live edit history recorded in local storage.</p>
+            <div id="activityLogList" class="space-y-2 overflow-y-auto custom-scrollbar flex-1 pr-1 text-xs">
+                <!-- Dynamic Logs -->
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-800">
+                <button onclick="clearActivityLog()" class="text-xs text-rose-600 dark:text-rose-400 hover:underline">Clear History</button>
+                <button onclick="toggleActivityModal()" class="px-3 py-1.5 rounded-xl text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: IMPORT DATA -->
+    <div id="importModal" class="modal pointer-events-none fixed inset-0 bg-slate-950/70 flex items-center justify-center z-50 p-4">
+        <div class="glass-strong rounded-2xl max-w-md w-full p-6 space-y-4 text-slate-800 dark:text-slate-100">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="font-bold text-base flex items-center gap-2"><i class="fa-solid fa-file-import text-indigo-600 dark:text-indigo-400"></i> Import data</h3>
+                <button onclick="closeModal('importModal')" aria-label="Close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">&times;</button>
+            </div>
+            <p id="importSummary" class="text-sm font-medium"></p>
+            <p class="text-xs text-slate-500 dark:text-slate-400"><b>Merge</b> adds only items you don't already have. <b>Replace</b> overwrites your tasks, references, notes and timer.</p>
+            <div class="flex justify-end gap-2 pt-1">
+                <button onclick="closeModal('importModal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">Cancel</button>
+                <button onclick="applyImport('merge')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-100 dark:bg-indigo-950 hover:bg-indigo-200 dark:hover:bg-indigo-900 text-indigo-800 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800">Merge</button>
+                <button onclick="applyImport('replace')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Replace</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toasts" role="status" aria-live="polite" class="fixed bottom-4 right-4 z-[60] flex flex-col gap-2 items-end pointer-events-none"></div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // --- DEFAULT INITIAL DATA ---
+        const DEFAULT_SUBTEAMS = [
+            "Team Leader & IT",
+            "Research & Content",
+            "Presentation & Q&A",
+            "Review & Audit"
+        ];
+
+        const DEFAULT_REFERENCES = [
+            {
+                id: "ref-1",
+                type: "book",
+                title: "Foye's Principles of Medicinal Chemistry",
+                role: "Medicinal Applications & Drug Targets",
+                badge: "Member B & G",
+                url: "",
+                notes: "Primary reference for aldehyde-containing bioactive agents & metabolism.",
+                author: "Lemke TL; Williams DA", editor: true, year: "2013", edition: "7th", publisher: "Lippincott Williams & Wilkins"
+            },
+            {
+                id: "ref-2",
+                type: "book",
+                title: "March's Advanced Organic Chemistry",
+                role: "In-depth Reaction Mechanisms",
+                badge: "Research Lead",
+                url: "",
+                notes: "Detailed step-by-step mechanisms for Nucleophilic Additions & Condensations.",
+                author: "Smith MB", year: "2020", edition: "8th", publisher: "Wiley"
+            },
+            {
+                id: "ref-3",
+                type: "book",
+                title: "Bruice / Solomons Organic Chemistry",
+                role: "Nomenclature & Core Properties",
+                badge: "Research Team",
+                url: "",
+                notes: "Standard IUPAC rules, physical boiling points, and carbonyl polarization."
+            },
+            {
+                id: "ref-4",
+                type: "database",
+                title: "PubChem (NIH)",
+                role: "Chemical Structures & Spectra",
+                badge: "IT & Research",
+                url: "https://pubchem.ncbi.nlm.nih.gov/",
+                notes: "Verifying physical constants, CID codes, and IR/NMR spectrum data.",
+                publisher: "National Center for Biotechnology Information"
+            },
+            {
+                id: "ref-5",
+                type: "database",
+                title: "Organic Chemistry Portal",
+                role: "Name Reactions & Syntheses",
+                badge: "Member C",
+                url: "https://www.organic-chemistry.org/",
+                notes: "Aldol condensation, Tollens reaction, and Fehling's oxidation summaries."
+            },
+            {
+                id: "ref-6",
+                type: "database",
+                title: "DrugBank Online",
+                role: "Pharmaceutical Aldehydes Data",
+                badge: "Presentation Lead",
+                url: "https://go.drugbank.com/",
+                notes: "Cross-referencing aldehyde pharmaceutical drugs e.g. Formaldehyde, Glutaral."
+            }
+        ];
+
+        const DEFAULT_TASKS = [
+            { id: "task-1", title: "Setup Group 3 dashboard & structure modules", subteam: "Team Leader & IT", assignee: "IT Lead", status: "Completed", completed: true },
+            { id: "task-2", title: "Compile IUPAC nomenclature & physical properties", subteam: "Research & Content", assignee: "Member B", status: "Completed", completed: true },
+            { id: "task-3", title: "Detail Nucleophilic Addition & Oxidation reactions", subteam: "Research & Content", assignee: "Member C", status: "In Progress", completed: false },
+            { id: "task-4", title: "Design PowerPoint slides for Aldehydes intro", subteam: "Presentation & Q&A", assignee: "Member D", status: "Pending", completed: false },
+            { id: "task-5", title: "Cross-check references with faculty evaluation criteria", subteam: "Review & Audit", assignee: "Reviewer A", status: "Completed", completed: true },
+            { id: "task-6", title: "Prepare Q&A defense bank for practical exam", subteam: "Presentation & Q&A", assignee: "Q&A Group", status: "In Progress", completed: false }
+        ];
+
+        // --- APP STATE ---
+        let appState = {
+            theme: 'light',
+            references: [],
+            tasks: [],
+            notes: "",
+            targetTimerMinutes: 10,
+            activeTaskFilter: "All",
+            activityLog: []
+        };
+
+        // --- TIMER VARIABLES ---
+        let timerInterval = null;
+        let timerSecondsLeft = 600;
+        let isTimerRunning = false;
+
+        // --- HELPERS: escaping, modals, toasts, search state ---
+        let taskQuery = "", refQuery = "", pendingImport = null, tqT, rqT;
+        const $ = id => document.getElementById(id);
+        const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        const S = (v, d = '', n = 300) => (typeof v === 'string' && v.trim()) ? v.trim().slice(0, n) : d;
+        const safeUrl = u => /^https?:\/\//i.test(u || '') ? u.trim() : '';
+        const cleanId = (v, p) => S(v).replace(/[^\w-]/g, '') || p + '-' + uid();
+
+        function openModal(id) {
+            const m = $(id);
+            m.classList.remove('pointer-events-none');
+            requestAnimationFrame(() => { m.classList.add('show'); const f = m.querySelector('input:not([type=hidden]):not([type=checkbox]),textarea'); if (f) f.focus({ preventScroll: true }); });
+        }
+        function closeModal(id) {
+            const m = $(id);
+            m.classList.remove('show'); m.classList.add('pointer-events-none');
+        }
+        function initUi() {
+            // one delegated listener per concern (no per-row / per-modal listeners)
+            document.addEventListener('mousedown', e => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal.show').forEach(m => closeModal(m.id)); });
+            $('taskTableBody').addEventListener('click', e => {
+                const b = e.target.closest('[data-act]'); if (!b) return;
+                const id = b.closest('tr').dataset.id;
+                if (b.dataset.act === 'edit') openEditTaskModal(id); else if (b.dataset.act === 'del') deleteTask(id);
+            });
+            $('taskTableBody').addEventListener('change', e => { if (e.target.dataset.act === 'chk') toggleTaskCheckbox(e.target.closest('tr').dataset.id); });
+            $('taskFilterButtons').addEventListener('click', e => {
+                const b = e.target.closest('button'); if (!b) return;
+                appState.activeTaskFilter = b.dataset.f; paintFilters(); applyTaskFilter(); saveState();
+            });
+            ['textbooksList', 'databasesList'].forEach(id => $(id).addEventListener('click', e => {
+                const b = e.target.closest('[data-act]'); if (!b) return;
+                b.dataset.act === 'edit' ? editReference(b.dataset.id) : deleteReference(b.dataset.id);
+            }));
+        }
+        function toast(msg, type = 'ok') {
+            const t = document.createElement('div');
+            t.className = 'toast toast-' + type;
+            t.innerHTML = `<i class="fa-solid ${type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i><span>${esc(msg)}</span>`;
+            document.getElementById('toasts').appendChild(t);
+            requestAnimationFrame(() => t.classList.add('in'));
+            setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 260); }, 3400);
+        }
+        function renderStats() {
+            const done = appState.tasks.filter(t => t.status === 'Completed').length;
+            document.getElementById('statRefs').textContent = appState.references.length;
+            document.getElementById('statDone').textContent = `${done}/${appState.tasks.length}`;
+        }
+        function setTaskQuery(v) { taskQuery = v.trim(); clearTimeout(tqT); tqT = setTimeout(applyTaskFilter, 120); }
+        function setRefQuery(v) { refQuery = v.trim(); clearTimeout(rqT); rqT = setTimeout(applyRefFilter, 120); }
+        function setIcon(id, cls) {
+            const old = document.getElementById(id), i = document.createElement('i');
+            i.id = id; i.className = cls; old.replaceWith(i);
+        }
+        function resetTimerManual() { resetTimer(); logActivity('Rehearsal timer reset.'); }
+
+        // --- EXPORT / IMPORT (JSON) ---
+        function exportData() {
+            const { references, tasks, notes, targetTimerMinutes } = appState;
+            const payload = { app: 'pcc102-group3-aldehydes', version: 2, exportedAt: new Date().toISOString(), data: { references, tasks, notes, targetTimerMinutes } };
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+            a.download = `pcc102-group3-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            logActivity(`Exported ${tasks.length} tasks and ${references.length} references.`);
+        }
+        function cleanTasks(a) {
+            return (Array.isArray(a) ? a : []).filter(t => t && S(t.title)).map(t => {
+                const st = ['Pending', 'In Progress', 'Completed'].includes(t.status) ? t.status : (t.completed ? 'Completed' : 'Pending');
+                return { id: cleanId(t.id, 'task'), title: S(t.title), subteam: DEFAULT_SUBTEAMS.includes(t.subteam) ? t.subteam : DEFAULT_SUBTEAMS[1], assignee: S(t.assignee, 'Unassigned'), status: st, completed: st === 'Completed' };
+            });
+        }
+        function cleanRefs(a) {
+            return (Array.isArray(a) ? a : []).filter(r => r && S(r.title)).map(r => ({
+                id: cleanId(r.id, 'ref'), type: r.type === 'database' ? 'database' : 'book', title: S(r.title), role: S(r.role, '-'), badge: S(r.badge),
+                url: safeUrl(S(r.url, '', 500)), notes: S(r.notes, '', 800), author: S(r.author), year: S(r.year, '', 12), edition: S(r.edition, '', 20),
+                publisher: S(r.publisher), editor: r.editor === true
+            }));
+        }
+        function handleImportFile(e) {
+            const f = e.target.files[0]; e.target.value = '';
+            if (!f) return;
+            if (f.size > 2e6) return toast('Import failed: file is larger than 2 MB.', 'warn');
+            const rd = new FileReader();
+            rd.onerror = () => toast('Import failed: could not read the file.', 'warn');
+            rd.onload = () => {
+                try {
+                    const raw = JSON.parse(rd.result), d = (raw && raw.data) ? raw.data : raw;
+                    if (!d || (!Array.isArray(d.tasks) && !Array.isArray(d.references))) throw new Error('no tasks or references found.');
+                    const m = Number(d.targetTimerMinutes);
+                    pendingImport = { tasks: cleanTasks(d.tasks), refs: cleanRefs(d.references), notes: typeof d.notes === 'string' ? d.notes.slice(0, 20000) : null, minutes: (m >= 1 && m <= 120) ? Math.round(m) : 0 };
+                    document.getElementById('importSummary').textContent = `${f.name}: ${pendingImport.tasks.length} tasks and ${pendingImport.refs.length} references found.`;
+                    openModal('importModal');
+                } catch (err) { toast('Import failed: ' + (err.message.includes('JSON') ? 'not a valid JSON file.' : err.message), 'warn'); }
+            };
+            rd.readAsText(f);
+        }
+        function applyImport(mode) {
+            const p = pendingImport; if (!p) return;
+            let nt = p.tasks.length, nr = p.refs.length;
+            if (mode === 'replace') {
+                appState.tasks = p.tasks; appState.references = p.refs;
+                if (p.notes !== null) appState.notes = p.notes;
+                if (p.minutes) appState.targetTimerMinutes = p.minutes;
+            } else {
+                const ti = new Set(appState.tasks.map(t => t.id)), ri = new Set(appState.references.map(r => r.id));
+                const addT = p.tasks.filter(t => !ti.has(t.id)), addR = p.refs.filter(r => !ri.has(r.id));
+                appState.tasks.push(...addT); appState.references.push(...addR); nt = addT.length; nr = addR.length;
+            }
+            pendingImport = null; resetTimer(); saveState(); renderAll(); closeModal('importModal');
+            logActivity(`Imported (${mode}): ${nt} tasks, ${nr} references.`);
+        }
+
+        // --- CITATIONS (APA 7 / Vancouver) ---
+        function parseAuthors(s) {
+            return (s || '').split(';').map(a => a.trim()).filter(Boolean).map(a => {
+                const p = a.split(/\s+/), last = p[p.length - 1];
+                return (p.length > 1 && /^[A-Z]{1,4}$/.test(last)) ? { sur: p.slice(0, -1).join(' '), ini: last.split('') } : { sur: a, ini: [] };
+            });
+        }
+        function fmtAuthors(list, style, editor) {
+            if (!list.length) return '';
+            if (style === 'apa') {
+                const n = list.map(a => a.ini.length ? `${a.sur}, ${a.ini.map(i => i + '.').join(' ')}` : a.sur);
+                const s = n.length === 1 ? n[0] : n.length <= 20 ? n.slice(0, -1).join(', ') + ', & ' + n[n.length - 1] : n.slice(0, 19).join(', ') + ', . . . ' + n[n.length - 1];
+                return editor ? `${s} (${n.length > 1 ? 'Eds.' : 'Ed.'})` : s;
+            }
+            const n = list.map(a => `${a.sur} ${a.ini.join('')}`.trim());
+            const s = n.length > 6 ? n.slice(0, 6).join(', ') + ', et al' : n.join(', ');
+            return editor ? `${s}, ${n.length > 1 ? 'editors' : 'editor'}` : s;
+        }
+        function buildCitation(r, style, i) {
+            const A = fmtAuthors(parseAuthors(r.author), style, r.editor), now = new Date();
+            const web = r.type === 'database', ed = r.edition ? `${r.edition} ed` : '';
+            if (style === 'apa') {
+                const y = r.year || 'n.d.', edA = ed ? ` (${ed}.)` : '';
+                let s = A ? `${A}${r.editor ? '.' : ''} (${y}). ${r.title}${edA}.` : `${r.title}${edA}. (${y}).`;
+                if (r.publisher) s += ` ${r.publisher}.`;
+                if (web && r.url) s += ` Retrieved ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}, from ${r.url}`;
+                else if (r.url) s += ` ${r.url}`;
+                return s;
+            }
+            const cited = `${now.getFullYear()} ${now.toLocaleString('en-US', { month: 'short' })} ${now.getDate()}`;
+            let s = `${i + 1}. ${A ? A + '. ' : ''}${r.title}${web ? ' [Internet]' : ''}. `;
+            if (ed && !web) s += `${r.edition} ed. `;
+            if (r.publisher) s += `${r.publisher}; `;
+            s += web ? `[cited ${cited}]. ${r.url ? 'Available from: ' + r.url : ''}` : `${r.year || '[date unknown]'}.`;
+            return s.trim();
+        }
+        async function copyText(text) {
+            try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+                const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                let ok = false; try { ok = document.execCommand('copy'); } catch (_) {}
+                ta.remove(); return ok;
+            }
+        }
+        async function copyCitations() {
+            const refs = appState.references;
+            if (!refs.length) return toast('Add a reference first.', 'warn');
+            const style = document.getElementById('citeStyle').value;
+            const order = [...refs.filter(r => r.type === 'book'), ...refs.filter(r => r.type === 'database')];
+            const lines = style === 'apa' ? order.map(r => buildCitation(r, 'apa')).sort((a, b) => a.localeCompare(b)) : order.map((r, i) => buildCitation(r, 'vancouver', i));
+            const ok = await copyText('References\n\n' + lines.join(style === 'apa' ? '\n\n' : '\n'));
+            const missing = order.filter(r => r.type === 'book' && (!r.author || !r.year)).length;
+            const label = style === 'apa' ? 'APA 7' : 'Vancouver';
+            if (!ok) return toast('Copy was blocked by the browser. Try again after clicking the page.', 'warn');
+            toast(`${order.length} ${label} citations copied.` + (missing ? ` ${missing} textbook(s) lack an author or year; edit them to complete the entry.` : ''), missing ? 'warn' : 'ok');
+            logActivity(`Copied ${order.length} ${label} citations.`, true);
+        }
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            applyTheme();
+            initConnectionListener();
+            initUi();
+            renderAll();
+        });
+
+        // --- THEME SWITCHER ---
+        function applyTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (appState.theme === 'dark') {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                setIcon('themeIcon', "fa-solid fa-sun text-amber-400");
+                themeText.textContent = "Light";
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                setIcon('themeIcon', "fa-solid fa-moon text-indigo-300");
+                themeText.textContent = "Dark";
+            }
+        }
+
+        function toggleTheme() {
+            appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            saveState();
+            logActivity(`Switched UI theme to ${appState.theme.toUpperCase()} mode`, true);
+        }
+
+        // --- LOCAL STORAGE PERSISTENCE ---
+        function loadState() {
+            const saved = localStorage.getItem('pcc102_group3_aldehydes_v2');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch (e) {
+                    console.error("Failed to parse state", e);
+                    loadDefaults();
+                }
+            } else {
+                loadDefaults();
+            }
+            
+            appState.references = appState.references || []; appState.tasks = appState.tasks || []; appState.activityLog = appState.activityLog || []; appState.activeTaskFilter = appState.activeTaskFilter || "All";
+            // Sync status flag with completed
+            appState.tasks.forEach(t => {
+                if (!t.status) t.status = t.completed ? "Completed" : "Pending";
+                t.completed = (t.status === "Completed");
+            });
+
+            timerSecondsLeft = (appState.targetTimerMinutes || 10) * 60;
+            updateTimerDisplay();
+        }
+
+        function loadDefaults() {
+            appState.theme = 'light';
+            appState.references = [...DEFAULT_REFERENCES];
+            appState.tasks = [...DEFAULT_TASKS];
+            appState.notes = "Carbonyl Carbon Hybridization: sp2, trigonal planar ~120°.\nTollens Silver Mirror Test: Ag+ -> Ag0 (Aldehyde Oxidation).\nFehling's Reaction: Cu2+ (Blue) -> Cu2O (Red Precipitate).\nIUPAC Naming suffix: '-al' (e.g. Ethanal, Benzaldehyde).";
+            appState.targetTimerMinutes = 10;
+            appState.activityLog = [
+                { time: new Date().toLocaleTimeString(), text: "Group 3 Research Dashboard loaded." }
+            ];
+            saveState();
+        }
+
+        let saveT = null;
+        function flushState() {
+            clearTimeout(saveT); saveT = null;
+            try { localStorage.setItem('pcc102_group3_aldehydes_v2', JSON.stringify(appState)); } catch (e) { console.error('Save failed', e); }
+        }
+        function saveState() { clearTimeout(saveT); saveT = setTimeout(flushState, 300); }
+        addEventListener('pagehide', flushState);
+        document.addEventListener('visibilitychange', () => { if (document.hidden) flushState(); });
+
+        function logActivity(text, silent) {
+            if (!silent) toast(text, /^(Deleted|Reset|Connection: Offline)/.test(text) ? 'warn' : 'ok');
+            appState.activityLog.unshift({ time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }), text });
+            if (appState.activityLog.length > 30) appState.activityLog.length = 30;
+            saveState(); updateLogBadge();
+            if ($('activityModal').classList.contains('show')) renderActivityLog();
+        }
+
+        function resetAllData() {
+            if (confirm("Reset all custom edits back to Group 3 initial defaults?")) {
+                loadDefaults();
+                applyTheme();
+                renderAll();
+                logActivity("Reset dashboard data to defaults.");
+            }
+        }
+
+        // --- CONNECTION STATUS ---
+        function initConnectionListener() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            function updateStatus() {
+                if (navigator.onLine) {
+                    statusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse";
+                    statusText.textContent = "Online / Live";
+                    statusText.className = "text-emerald-400 font-medium";
+                } else {
+                    statusDot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
+                    statusText.textContent = "Offline / Local";
+                    statusText.className = "text-amber-400 font-medium";
+                }
+            }
+
+            window.addEventListener('online', () => { updateStatus(); logActivity("Connection: Online"); });
+            window.addEventListener('offline', () => { updateStatus(); logActivity("Connection: Offline mode"); });
+            updateStatus();
+        }
+
+        // --- RENDERERS ---
+        function renderAll() {
+            // full rebuild: only used on first load, import and reset
+            progEls = null; updateProgress(); buildRefs(); buildFilters(); buildTasks(); renderNotes(); updateLogBadge();
+        }
+
+        // 1. SUBTEAM PROGRESS (built once, then patched in place; bars use transform)
+        let progEls = null;
+        const SUB_ICON = { "Team Leader & IT": "fa-laptop-code", "Research & Content": "fa-microscope", "Presentation & Q&A": "fa-display", "Review & Audit": "fa-clipboard-check" };
+        const setBar = (el, p) => { el.style.transform = `scaleX(${p / 100})`; };
+        function buildProgress() {
+            const c = $('subteamProgressContainer'), fr = document.createDocumentFragment();
+            c.textContent = ''; progEls = {};
+            DEFAULT_SUBTEAMS.forEach(sub => {
+                const card = document.createElement('div');
+                card.className = "glass card-hover p-4 rounded-2xl flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+                            <span class="font-semibold text-slate-700 dark:text-slate-200 truncate pr-1">${sub}</span>
+                            <i class="fa-solid ${SUB_ICON[sub] || 'fa-users-gear'} text-indigo-600 dark:text-indigo-400"></i>
+                        </div>
+                        <div data-k="pct" class="text-2xl font-extrabold text-slate-900 dark:text-slate-100">0%</div>
+                    </div>
+                    <div class="mt-3 space-y-1.5">
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-200 dark:border-slate-700">
+                            <div data-k="bar" class="bg-indigo-600 dark:bg-indigo-500 h-full w-full origin-left transition-transform duration-300" style="transform:scaleX(0)"></div>
+                        </div>
+                        <div class="text-[10px] text-slate-400 dark:text-slate-500 flex justify-between font-medium">
+                            <span data-k="done"></span><span data-k="act" class="text-amber-600 dark:text-amber-400"></span>
+                        </div>
+                    </div>`;
+                const q = k => card.querySelector(`[data-k="${k}"]`);
+                progEls[sub] = { pct: q('pct'), bar: q('bar'), done: q('done'), act: q('act') };
+                fr.appendChild(card);
+            });
+            c.appendChild(fr);
+        }
+        function updateProgress(only) {
+            if (!progEls) buildProgress();
+            const T = appState.tasks, done = T.filter(t => t.status === 'Completed').length, p = T.length ? Math.round(done / T.length * 100) : 0;
+            $('overall-percentage').textContent = `${p}%`; setBar($('overall-bar'), p);
+            $('overall-task-count').textContent = `${done}/${T.length} Tasks Done`;
+            (only ? [only] : DEFAULT_SUBTEAMS).forEach(sub => {
+                const e = progEls[sub]; if (!e) return;
+                const st = T.filter(t => t.subteam === sub), d = st.filter(t => t.status === 'Completed').length, a = st.filter(t => t.status === 'In Progress').length;
+                const sp = st.length ? Math.round(d / st.length * 100) : 0;
+                e.pct.textContent = `${sp}%`; setBar(e.bar, sp); e.done.textContent = `Done: ${d}/${st.length}`; e.act.textContent = `${a} active`;
+            });
+            renderStats();
+        }
+        function renderSubteamProgress() { updateProgress(); }
+
+        // 2. TRUSTED REFERENCES (SIDE BY SIDE BOOKS & DATABASES)
+        const refEls = new Map();
+        const refList = type => $(type === 'database' ? 'databasesList' : 'textbooksList');
+        function addRefEl(ref, el) { const l = refList(ref.type); l.insertBefore(el, l.querySelector('[data-empty]')); }
+        function buildRefs() {
+            const fr = { book: document.createDocumentFragment(), database: document.createDocumentFragment() };
+            refEls.clear(); $('textbooksList').textContent = ''; $('databasesList').textContent = '';
+            appState.references.forEach(r => { const el = createRefCard(r); refEls.set(r.id, el); fr[r.type === 'database' ? 'database' : 'book'].appendChild(el); });
+            ['book', 'database'].forEach(t => {
+                const p = document.createElement('p'); p.className = 'text-xs text-slate-400 italic py-2'; p.hidden = true; p.dataset.empty = '1';
+                fr[t].appendChild(p); refList(t).appendChild(fr[t]);
+            });
+            applyRefFilter();
+        }
+        function applyRefFilter() {
+            const q = refQuery.toLowerCase(), n = { book: 0, database: 0 };
+            refEls.forEach(el => { const ok = !q || el._hay.includes(q); if (el.hidden === ok) el.hidden = !ok; if (ok) n[el.dataset.type]++; });
+            [['book', 'booksCount', 'textbooks'], ['database', 'databasesCount', 'databases']].forEach(([t, cid, label]) => {
+                $(cid).textContent = n[t];
+                const p = refList(t).querySelector('[data-empty]'); p.hidden = n[t] > 0;
+                p.textContent = q ? `No ${label} match your search.` : `No ${label} added yet.`;
+            });
+            renderStats();
+        }
+
+        function createRefCard(ref) {
+            const card = document.createElement('div');
+            card.className = "glass-inner card-hover p-3.5 rounded-xl space-y-2";
+
+            const linkHtml = ref.url 
+                ? `<a href="${esc(ref.url)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 font-semibold text-xs">${esc(ref.title)} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>`
+                : `<span class="font-bold text-slate-800 dark:text-slate-200 text-xs">${esc(ref.title)}</span>`;
+
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1">
+                        ${linkHtml}
+                        <p class="text-[11px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">${esc(ref.role)}</p>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button data-act="edit" data-id="${ref.id}" title="Edit Entry" class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 p-1">
+                            <i class="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button data-act="del" data-id="${ref.id}" title="Delete Entry" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 p-1">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 pt-1">
+                    ${ref.badge ? `<span class="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-semibold border border-indigo-200/60 dark:border-indigo-800/60"><i class="fa-regular fa-id-badge mr-1"></i>${esc(ref.badge)}</span>` : '<span></span>'}
+                </div>
+                ${ref.notes ? `<p class="text-[11px] text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950 p-2 rounded-lg border border-slate-100 dark:border-slate-800/80">${esc(ref.notes)}</p>` : ''}
+            `;
+            card.dataset.type = ref.type;
+            card._hay = [ref.title, ref.role, ref.badge, ref.notes, ref.author, ref.publisher].join(' ').toLowerCase();
+            return card;
+        }
+
+        // REFERENCE ACTIONS (touch only the affected card)
+        const REF_KEYS = ['Type', 'Title', 'Role', 'Badge', 'Url', 'Notes', 'Author', 'Year', 'Edition', 'Publisher'];
+        function fillRefForm(r) {
+            $('refId').value = r.id || '';
+            REF_KEYS.forEach(k => { $('ref' + k).value = r[k.toLowerCase()] ?? ''; });
+            $('refEditor').checked = !!r.editor;
+        }
+        function openAddReferenceModal(defaultType = 'book') { $('refModalTitle').textContent = "Add Reference Source"; fillRefForm({ type: defaultType }); openModal('refModal'); }
+        function editReference(id) {
+            const r = appState.references.find(x => x.id === id); if (!r) return;
+            $('refModalTitle').textContent = "Edit Reference Source"; fillRefForm(r); openModal('refModal');
+        }
+        function closeRefModal() { closeModal('refModal'); }
+        function handleRefSubmit(e) {
+            e.preventDefault();
+            const g = k => $('ref' + k).value.trim(), id = $('refId').value;
+            const data = { type: g('Type'), title: g('Title'), role: g('Role'), badge: g('Badge'), url: safeUrl(g('Url')), notes: g('Notes'), author: g('Author'), year: g('Year'), edition: g('Edition'), publisher: g('Publisher'), editor: $('refEditor').checked };
+            if (id) {
+                const i = appState.references.findIndex(r => r.id === id); if (i === -1) return;
+                const ref = { id, ...data }, old = refEls.get(id), el = createRefCard(ref);
+                appState.references[i] = ref; refEls.set(id, el);
+                if (old && old.dataset.type === ref.type) old.replaceWith(el); else { if (old) old.remove(); addRefEl(ref, el); }
+                logActivity(`Updated reference: "${ref.title}"`);
+            } else {
+                const ref = { id: 'ref-' + uid(), ...data }, el = createRefCard(ref);
+                appState.references.push(ref); refEls.set(ref.id, el); addRefEl(ref, el);
+                logActivity(`Added reference (${ref.type}): "${ref.title}"`);
+            }
+            saveState(); applyRefFilter(); closeRefModal();
+        }
+        function deleteReference(id) {
+            const ref = appState.references.find(r => r.id === id);
+            if (!ref || !confirm(`Delete "${ref.title}" from references?`)) return;
+            appState.references = appState.references.filter(r => r.id !== id);
+            const el = refEls.get(id); if (el) el.remove(); refEls.delete(id);
+            saveState(); applyRefFilter(); logActivity(`Deleted reference: "${ref.title}"`);
+        }
+
+        // 3. REHEARSAL TIMER FUNCTIONS
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSecondsLeft / 60);
+            const secs = timerSecondsLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('targetDurationDisplay').textContent = `${appState.targetTimerMinutes} mins`;
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            if (timerSecondsLeft <= 0) timerSecondsLeft = appState.targetTimerMinutes * 60;
+            isTimerRunning = true;
+            setIcon('timerPlayIcon', "fa-solid fa-pause");
+            document.getElementById('timerPlayText').textContent = "Pause";
+            
+            timerInterval = setInterval(() => {
+                if (timerSecondsLeft > 0) {
+                    timerSecondsLeft--;
+                    updateTimerDisplay();
+                } else {
+                    pauseTimer();
+                    
+                    logActivity("Rehearsal timer completed target duration.");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            setIcon('timerPlayIcon', "fa-solid fa-play");
+            document.getElementById('timerPlayText').textContent = "Start";
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerSecondsLeft = (appState.targetTimerMinutes || 10) * 60;
+            updateTimerDisplay();
+        }
+
+        function openEditTimerModal() {
+            document.getElementById('inputTimerMinutes').value = appState.targetTimerMinutes;
+            openModal('timerModal');
+        }
+
+        function closeTimerModal() {
+            closeModal('timerModal');
+        }
+
+        function saveTimerSettings() {
+            const val = parseInt(document.getElementById('inputTimerMinutes').value, 10);
+            if (val && val > 0) {
+                appState.targetTimerMinutes = val;
+                saveState();
+                resetTimer();
+                logActivity(`Updated rehearsal target timer to ${val} minutes.`);
+                closeTimerModal();
+            }
+        }
+
+        // 4. TASK BOARD (rows cached by id; filters toggle [hidden]; status changes patch one row)
+        const taskRows = new Map();
+        const pill = (cls, t) => `<span class="${cls} text-[11px] font-bold px-2.5 py-0.5 rounded-full border">${t}</span>`;
+        const BADGE = {
+            "Pending": pill('bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border-amber-200 dark:border-amber-800', 'Pending'),
+            "In Progress": pill('bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border-blue-200 dark:border-blue-800', 'In Progress'),
+            "Completed": pill('bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800', 'Completed')
+        };
+        const FILTER_ON = 'bg-indigo-600 text-white shadow-sm', FILTER_OFF = 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white';
+        function buildFilters() {
+            const c = $('taskFilterButtons'); c.textContent = '';
+            ["All", ...DEFAULT_SUBTEAMS].forEach(f => { const b = document.createElement('button'); b.dataset.f = f; b.textContent = f; c.appendChild(b); });
+            paintFilters();
+        }
+        function paintFilters() {
+            $('taskFilterButtons').childNodes.forEach(b => { b.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold ' + (b.dataset.f === appState.activeTaskFilter ? FILTER_ON : FILTER_OFF); });
+        }
+        function createTaskRow(t) {
+            const tr = document.createElement('tr');
+            tr.dataset.id = t.id; tr.className = "hover:bg-slate-50/80 dark:hover:bg-slate-800/40";
+            tr.innerHTML = `
+                <td class="py-3 px-3"><input type="checkbox" data-act="chk" class="w-4 h-4 text-indigo-600 rounded border-slate-300 dark:border-slate-700 focus:ring-indigo-500 cursor-pointer"></td>
+                <td data-k="title" class="py-3 px-3 font-medium text-xs">${esc(t.title)}</td>
+                <td class="py-3 px-3 text-xs"><span class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700 font-medium">${esc(t.subteam)}</span></td>
+                <td class="py-3 px-3 text-xs text-slate-600 dark:text-slate-400 font-medium"><i class="fa-regular fa-user mr-1 text-slate-400"></i>${esc(t.assignee)}</td>
+                <td data-k="status" class="py-3 px-3"></td>
+                <td class="py-3 px-3 text-right"><div class="flex items-center justify-end gap-1">
+                    <button data-act="edit" title="Edit Task Details & Status" class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 p-1"><i class="fa-solid fa-pen text-xs"></i></button>
+                    <button data-act="del" title="Delete Task" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 p-1"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </div></td>`;
+            patchTaskRow(tr, t); return tr;
+        }
+        function patchTaskRow(tr, t) {
+            const done = t.status === 'Completed';
+            tr.querySelector('input').checked = done;
+            tr.querySelector('[data-k="title"]').className = 'py-3 px-3 font-medium text-xs ' + (done ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-200');
+            tr.querySelector('[data-k="status"]').innerHTML = BADGE[t.status] || BADGE.Pending;
+            tr.dataset.sub = t.subteam;
+            tr._hay = [t.title, t.assignee, t.subteam, t.status].join(' ').toLowerCase();
+        }
+        function buildTasks() {
+            const tb = $('taskTableBody'); tb.textContent = ''; taskRows.clear();
+            const empty = document.createElement('tr'); empty.id = 'taskEmpty'; empty.hidden = true;
+            empty.innerHTML = '<td colspan="6" class="text-center py-6 text-slate-400 text-xs italic"></td>'; tb.appendChild(empty);
+            const fr = document.createDocumentFragment();
+            appState.tasks.forEach(t => { const tr = createTaskRow(t); taskRows.set(t.id, tr); fr.appendChild(tr); });
+            tb.appendChild(fr); applyTaskFilter();
+        }
+        function applyTaskFilter() {
+            const q = taskQuery.toLowerCase(), f = appState.activeTaskFilter; let shown = 0;
+            taskRows.forEach(tr => {
+                const ok = (f === 'All' || tr.dataset.sub === f) && (!q || tr._hay.includes(q));
+                if (tr.hidden === ok) tr.hidden = !ok; if (ok) shown++;
+            });
+            const e = $('taskEmpty'); e.hidden = shown > 0;
+            e.firstChild.textContent = q ? `No tasks match “${taskQuery}”.` : 'No tasks found for this filter.';
+        }
+        function toggleTaskCheckbox(id) {
+            const t = appState.tasks.find(x => x.id === id); if (!t) return;
+            t.status = t.status === 'Completed' ? 'In Progress' : 'Completed'; t.completed = t.status === 'Completed';
+            patchTaskRow(taskRows.get(id), t); updateProgress(t.subteam); applyTaskFilter(); saveState();
+            logActivity(`Changed status of "${t.title}" to ${t.status}`);
+        }
+        function openAddTaskModal() {
+            $('taskModalTitle').textContent = "Add Subteam Task"; $('taskId').value = ""; $('taskTitle').value = ""; $('taskAssignee').value = ""; $('taskStatus').value = "Pending";
+            openModal('taskModal');
+        }
+        function openEditTaskModal(id) {
+            const t = appState.tasks.find(x => x.id === id); if (!t) return;
+            $('taskModalTitle').textContent = "Edit Task & Status"; $('taskId').value = t.id; $('taskTitle').value = t.title;
+            $('taskSubteam').value = t.subteam; $('taskAssignee').value = t.assignee; $('taskStatus').value = t.status || (t.completed ? "Completed" : "Pending");
+            openModal('taskModal');
+        }
+        function closeTaskModal() { closeModal('taskModal'); }
+        function handleTaskSubmit(e) {
+            e.preventDefault();
+            const id = $('taskId').value, title = $('taskTitle').value.trim(), subteam = $('taskSubteam').value, assignee = $('taskAssignee').value.trim(), status = $('taskStatus').value;
+            if (id) {
+                const i = appState.tasks.findIndex(t => t.id === id); if (i === -1) return;
+                const task = { id, title, subteam, assignee, status, completed: status === "Completed" }, tr = createTaskRow(task);
+                appState.tasks[i] = task; taskRows.get(id).replaceWith(tr); taskRows.set(id, tr);
+                logActivity(`Edited task: "${title}" (Status: ${status})`);
+            } else {
+                const task = { id: 'task-' + uid(), title, subteam, assignee, status, completed: status === "Completed" }, tr = createTaskRow(task);
+                appState.tasks.push(task); taskRows.set(task.id, tr); $('taskTableBody').appendChild(tr);
+                logActivity(`Added new task: "${title}" for ${subteam}`);
+            }
+            updateProgress(); applyTaskFilter(); saveState(); closeTaskModal();
+        }
+        function deleteTask(id) {
+            const t = appState.tasks.find(x => x.id === id);
+            if (!t || !confirm(`Delete task "${t.title}"?`)) return;
+            appState.tasks = appState.tasks.filter(x => x.id !== id);
+            const tr = taskRows.get(id); if (tr) tr.remove(); taskRows.delete(id);
+            updateProgress(t.subteam); applyTaskFilter(); saveState(); logActivity(`Deleted task: "${t.title}"`);
+        }
+
+        // 5. NOTES SCRATCHPAD
+        function renderNotes() {
+            document.getElementById('collaborativeNotes').value = appState.notes || "";
+        }
+
+        let saveNotesTimeout;
+        function saveNotes() {
+            const val = document.getElementById('collaborativeNotes').value;
+            appState.notes = val;
+            document.getElementById('notesSaveStatus').textContent = "Saving...";
+            
+            clearTimeout(saveNotesTimeout);
+            saveNotesTimeout = setTimeout(() => {
+                saveState();
+                document.getElementById('notesSaveStatus').textContent = "Saved";
+            }, 600);
+        }
+
+        // 6. ACTIVITY LOG (list is only rendered while the modal is open)
+        function updateLogBadge() { $('logCountBadge').textContent = appState.activityLog.length; }
+        function renderActivityLog() {
+            updateLogBadge();
+            $('activityLogList').innerHTML = appState.activityLog.length
+                ? appState.activityLog.map(l => `<div class="flex items-start gap-2 bg-slate-50 dark:bg-slate-950 p-2 rounded-lg border border-slate-100 dark:border-slate-800"><span class="text-[10px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded font-bold">${esc(l.time)}</span><span class="flex-1 text-slate-700 dark:text-slate-300">${esc(l.text)}</span></div>`).join('')
+                : `<p class="text-slate-400 italic">No activity logged yet.</p>`;
+        }
+        function toggleActivityModal() {
+            if ($('activityModal').classList.contains('show')) closeModal('activityModal');
+            else { renderActivityLog(); openModal('activityModal'); }
+        }
+        function clearActivityLog() { appState.activityLog = []; saveState(); renderActivityLog(); }
+    </script>
+</body>
+</html>
